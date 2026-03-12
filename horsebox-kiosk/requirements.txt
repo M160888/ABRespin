@@ -4,4 +4,4 @@ pymodbus>=3.5.0
 python-socketio>=5.9.0
 eventlet>=0.33.0
 simple-websocket>=1.0.0
-systemd-python>=235  # For watchdog notifications (Linux only)
+# systemd-python>=235  # For watchdog notifications (Linux with systemd only - optional)
