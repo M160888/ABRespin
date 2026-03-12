@@ -45,7 +45,12 @@ class RelayManager:
             print(f"Warning: Could not save relay states: {e}")
 
     def restore_states(self):
-        """Restore relay states from disk on startup"""
+        """Restore relay states from disk on startup.
+
+        Vehicle-safe policy: only restores relays tagged 'critical' (e.g. fridge,
+        water pump) and only if the system was off for less than 1 hour.
+        Lights, fans and other non-critical relays always start OFF.
+        """
         try:
             with open(self.state_file, 'r') as f:
                 state_data = json.load(f)
@@ -53,25 +58,40 @@ class RelayManager:
             saved_states = state_data.get('states', {})
             saved_time = state_data.get('timestamp', 0)
 
-            # Check if saved state is recent (within 24 hours)
+            # Only restore if shutdown was recent - longer absence is likely deliberate
             age_hours = (time.time() - saved_time) / 3600
-            if age_hours > 24:
+            if age_hours > 1:
                 print(f"Saved state is {age_hours:.1f} hours old - not restoring")
                 return
 
-            print(f"Restoring relay states from {age_hours:.1f} hours ago...")
+            print(f"Restoring critical relay states from {age_hours:.1f} hours ago...")
 
+            # Build set of relay IDs tagged 'critical'
+            critical_ids = {
+                r['id'] for r in self.relays
+                if 'critical' in r.get('tags', [])
+            }
+
+            popup_config = self.config.get('popup_control', {})
+            popup_ids = {popup_config.get('up_relay_id'), popup_config.get('down_relay_id')}
+
+            restored = 0
             for relay_id_str, state in saved_states.items():
                 relay_id = int(relay_id_str)
-                # Don't restore popup relays - always start in safe state
-                popup_config = self.config.get('popup_control', {})
-                if relay_id in [popup_config.get('up_relay_id'), popup_config.get('down_relay_id')]:
+
+                # Never restore popup relays
+                if relay_id in popup_ids:
+                    continue
+
+                # Only restore critical relays - everything else stays OFF
+                if relay_id not in critical_ids:
                     continue
 
                 self.set_relay(relay_id, state)
-                time.sleep(0.05)  # Small delay between restorations
+                time.sleep(0.05)
+                restored += 1
 
-            print(f"Restored {len(saved_states)} relay states")
+            print(f"Restored {restored} critical relay states ({len(saved_states) - restored} non-critical left OFF)")
 
         except FileNotFoundError:
             print("No saved state file found - starting fresh")

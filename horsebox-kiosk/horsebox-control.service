@@ -1,6 +1,7 @@
 [Unit]
 Description=Horsebox Control System - Flask Backend
-After=network.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=notify

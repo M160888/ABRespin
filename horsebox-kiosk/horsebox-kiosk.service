@@ -9,7 +9,8 @@ User=pi
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=/home/pi/.Xauthority
 ExecStart=/home/pi/horsebox/start_kiosk.sh
-# NO Restart= directive - allows clean exit for debugging
+Restart=on-failure
+RestartSec=5
 StandardOutput=journal
 StandardError=journal
 

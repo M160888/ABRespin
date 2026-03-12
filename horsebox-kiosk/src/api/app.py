@@ -5,6 +5,9 @@ import os
 import threading
 import time
 import random
+import json
+import subprocess
+import requests
 
 # Systemd watchdog support (optional - won't crash if not available)
 try:
@@ -26,6 +29,7 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 config_path = os.path.join(os.path.dirname(__file__), '..', '..', 'relay_config.json')
+user_config_path = os.path.join(os.path.dirname(__file__), '..', '..', 'user_config.json')
 relay_manager = RelayManager(config_path=config_path)
 
 # Initialize Automation Engine
@@ -264,6 +268,99 @@ def delete_automation(auto_id):
         return jsonify({'success': True, 'auto_id': auto_id})
     return jsonify({'error': 'Failed to delete automation'}), 400
 
+# ================== User Config API ==================
+
+@app.route('/api/user-config')
+def get_user_config():
+    try:
+        with open(user_config_path, 'r') as f:
+            return jsonify(json.load(f))
+    except FileNotFoundError:
+        return jsonify({'name': '', 'phone': '', 'address': '', 'notes': ''})
+
+@app.route('/api/user-config', methods=['PUT'])
+def update_user_config():
+    data = request.get_json()
+    allowed = {'name', 'phone', 'address', 'notes'}
+    sanitised = {k: str(v) for k, v in data.items() if k in allowed}
+    with open(user_config_path, 'w') as f:
+        json.dump(sanitised, f, indent=2)
+    return jsonify({'success': True})
+
+# ================== WiFi API ==================
+
+@app.route('/api/wifi/status')
+def wifi_status():
+    try:
+        result = subprocess.run(
+            ['nmcli', '-t', '-f', 'DEVICE,TYPE,STATE,CONNECTION', 'device'],
+            capture_output=True, text=True, timeout=10
+        )
+        devices = []
+        for line in result.stdout.strip().split('\n'):
+            parts = line.split(':')
+            if len(parts) >= 4 and parts[1] == 'wifi':
+                devices.append({
+                    'device': parts[0],
+                    'state': parts[2],
+                    'connection': parts[3]
+                })
+        return jsonify({'devices': devices})
+    except FileNotFoundError:
+        return jsonify({'error': 'nmcli not available'}), 501
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/wifi/scan')
+def wifi_scan():
+    try:
+        subprocess.run(['nmcli', 'device', 'wifi', 'rescan'], timeout=10, capture_output=True)
+        result = subprocess.run(
+            ['nmcli', '-t', '-f', 'SSID,SIGNAL,SECURITY,IN-USE', 'device', 'wifi', 'list'],
+            capture_output=True, text=True, timeout=10
+        )
+        networks = []
+        seen = set()
+        for line in result.stdout.strip().split('\n'):
+            parts = line.split(':')
+            if len(parts) >= 4:
+                ssid = parts[0].replace('\\:', ':').strip()
+                if ssid and ssid not in seen:
+                    seen.add(ssid)
+                    networks.append({
+                        'ssid': ssid,
+                        'signal': int(parts[1]) if parts[1].isdigit() else 0,
+                        'security': parts[2],
+                        'in_use': parts[3].strip() == '*'
+                    })
+        networks.sort(key=lambda x: x['signal'], reverse=True)
+        return jsonify({'networks': networks})
+    except FileNotFoundError:
+        return jsonify({'error': 'nmcli not available'}), 501
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/wifi/connect', methods=['POST'])
+def wifi_connect():
+    data = request.get_json()
+    ssid = data.get('ssid', '').strip()
+    password = data.get('password', '').strip()
+    if not ssid:
+        return jsonify({'success': False, 'error': 'SSID required'}), 400
+    try:
+        cmd = ['nmcli', 'device', 'wifi', 'connect', ssid]
+        if password:
+            cmd += ['password', password]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+        if result.returncode == 0:
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': result.stderr.strip() or result.stdout.strip()}), 400
+    except FileNotFoundError:
+        return jsonify({'success': False, 'error': 'nmcli not available'}), 501
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # ================== Background Tasks ==================
 
 def send_sensor_data():
@@ -297,16 +394,17 @@ def send_sensor_data():
 
         time.sleep(5)
 
-def send_weather_data():
-    """Sends mock weather data."""
+
+def fetch_weather():
+    """Fetch real weather from wttr.in every 15 min. Emits nothing if offline."""
     while True:
-        weather_conditions = ["Sunny", "Cloudy", "Rainy", "Partly Cloudy"]
-        data = {
-            "temperature": 20 + random.uniform(-5, 5),
-            "condition": random.choice(weather_conditions)
-        }
-        socketio.emit('weather_data', data)
-        time.sleep(60 * 15) # Update every 15 minutes
+        try:
+            resp = requests.get('https://wttr.in/?format=%t+%C', timeout=5)
+            if resp.status_code == 200:
+                socketio.emit('weather_data', {'text': resp.text.strip(), 'available': True})
+        except Exception:
+            socketio.emit('weather_data', {'available': False})
+        time.sleep(15 * 60)
 
 
 def systemd_watchdog_notify():
@@ -341,8 +439,7 @@ if __name__ == '__main__':
     sensor_thread.daemon = True
     sensor_thread.start()
 
-    weather_thread = threading.Thread(target=send_weather_data)
-    weather_thread.daemon = True
+    weather_thread = threading.Thread(target=fetch_weather, daemon=True)
     weather_thread.start()
 
     # Start systemd watchdog notification thread

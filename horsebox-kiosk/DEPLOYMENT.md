@@ -18,13 +18,13 @@
 
 ### Raspberry Pi Network Setup
 ```bash
-# Set static IP for Pi (optional but recommended)
+# Set static IP for Pi (direct Ethernet to relay board - no router)
 sudo nano /etc/dhcpcd.conf
 
 # Add at the end:
 interface eth0
 static ip_address=192.168.1.100/24
-static routers=192.168.1.1
+# No static routers - direct connection, no gateway needed
 ```
 
 ## Installation Steps
@@ -175,7 +175,9 @@ The popup motor control has built-in safety to prevent short-circuit:
 
 ### State Persistence
 - Saves relay states after every change
-- Restores states on reboot (if < 24 hours old)
+- On reboot, **only restores relays tagged `critical`** (fridge, water pump, main power)
+- Non-critical relays (lights, fans) always start OFF — safe for vehicle use
+- State only restored if system was off less than 1 hour; longer = deliberate shutdown = clean start
 - **NEVER restores popup relays** (safety first)
 - Survives power outages and crashes
 
