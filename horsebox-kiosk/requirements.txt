@@ -6,3 +6,4 @@ python-socketio>=5.9.0
 eventlet>=0.33.0
 simple-websocket>=1.0.0
 # systemd-python>=235  # For watchdog notifications (Linux with systemd only - optional)
+# gpsd-py3>=0.3.0      # For GPS coordinates + time sync (requires gpsd daemon - optional)

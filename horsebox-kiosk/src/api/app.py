@@ -9,6 +9,14 @@ import json
 import subprocess
 import requests
 
+# GPS support (optional — requires gpsd running and gpsd-py3 installed)
+try:
+    import gpsd
+    GPSD_AVAILABLE = True
+except ImportError:
+    GPSD_AVAILABLE = False
+    print("⚠️  gpsd-py3 not installed - GPS disabled")
+
 # Systemd watchdog support (optional - won't crash if not available)
 try:
     from systemd import daemon as systemd_daemon
@@ -407,6 +415,33 @@ def fetch_weather():
         time.sleep(15 * 60)
 
 
+def read_gps():
+    """Read GPS position from gpsd and emit to UI every 3 seconds."""
+    if not GPSD_AVAILABLE:
+        return
+    while True:
+        try:
+            gpsd.connect()
+            while True:
+                packet = gpsd.get_current()
+                if packet.mode >= 2:  # 2D or 3D fix
+                    socketio.emit('gps_data', {
+                        'fix': True,
+                        'lat': round(packet.lat, 6),
+                        'lon': round(packet.lon, 6),
+                        'alt': round(packet.alt, 1) if packet.mode == 3 else None,
+                        'sats': packet.sats_valid if hasattr(packet, 'sats_valid') else None,
+                        'mode': packet.mode
+                    })
+                else:
+                    socketio.emit('gps_data', {'fix': False})
+                time.sleep(3)
+        except Exception as e:
+            print(f"GPS error: {e}")
+            socketio.emit('gps_data', {'fix': False})
+            time.sleep(15)
+
+
 def systemd_watchdog_notify():
     """Background thread that notifies systemd watchdog the app is healthy"""
     if not SYSTEMD_AVAILABLE:
@@ -441,6 +476,10 @@ if __name__ == '__main__':
 
     weather_thread = threading.Thread(target=fetch_weather, daemon=True)
     weather_thread.start()
+
+    if GPSD_AVAILABLE:
+        gps_thread = threading.Thread(target=read_gps, daemon=True)
+        gps_thread.start()
 
     # Start systemd watchdog notification thread
     if SYSTEMD_AVAILABLE:

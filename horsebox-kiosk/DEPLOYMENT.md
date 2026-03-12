@@ -27,6 +27,61 @@ static ip_address=192.168.1.100/24
 # No static routers - direct connection, no gateway needed
 ```
 
+## GPS Time Sync + Location (Optional but Recommended)
+
+Using a USB GPS dongle gives accurate offline time and live coordinates displayed in the UI.
+
+### Install packages
+```bash
+sudo apt install -y gpsd gpsd-clients chrony
+pip install gpsd-py3
+```
+
+### Configure gpsd
+Find your GPS device (usually `/dev/ttyUSB0` or `/dev/ttyACM0`):
+```bash
+ls /dev/tty{USB,ACM}*
+```
+
+Edit `/etc/default/gpsd`:
+```
+DEVICES="/dev/ttyUSB0"
+GPSD_OPTIONS="-n"
+USBAUTO="true"
+```
+
+Enable and start:
+```bash
+sudo systemctl enable gpsd
+sudo systemctl start gpsd
+# Test it's reading:
+cgps -s
+```
+
+### Configure chrony for GPS time
+Edit `/etc/chrony/chrony.conf` — add near the top (before pool/server lines):
+```
+# GPS via gpsd shared memory
+refclock SHM 0 offset 0.0 delay 0.2 refid GPS
+
+# Keep internet NTP as fallback when available
+pool 2.debian.pool.ntp.org iburst
+```
+
+Restart chrony:
+```bash
+sudo systemctl restart chrony
+# Check GPS is being used as time source:
+chronyc sources -v
+```
+
+You should see `GPS` listed with a `*` (selected source) once the dongle has a sky fix.
+
+### Sky view
+The dongle needs line-of-sight to sky. Mount it near a window or run a USB extension cable to the cab roof area. Multi-constellation dongles (GPS+GLONASS+BeiDou) lock faster in marginal conditions.
+
+---
+
 ## Display Setup — Waveshare 10.1DP-CAPLCD
 
 **Specs:** 1280×800, 60Hz | HDMI (display) + USB (touch)
