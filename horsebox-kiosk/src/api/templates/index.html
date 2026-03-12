@@ -1979,11 +1979,14 @@ body, html {
     overflow-y: auto;
 }
 
-/* Relay grid: auto-fill columns, natural card height, packed from top */
+/* Relay grid: fills horizontal space, 3 rows, adds a column when relays overflow */
 .relay-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    grid-auto-rows: auto;
-    align-content: start;
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: unset;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, 1fr);
+    grid-auto-columns: 1fr;
     gap: 8px;
     max-width: none;
     margin: 0;
@@ -1994,7 +1997,7 @@ body, html {
 .relay-header { gap: 8px; }
 .relay-icon { width: 30px; height: 30px; font-size: 14px; border-radius: 6px; }
 .relay-name { font-size: 12px; padding: 4px 6px; }
-.relay-toggle { height: 40px; font-size: 13px; border-radius: 8px; gap: 8px; }
+.relay-toggle { flex: 1; height: auto; min-height: 40px; font-size: 13px; border-radius: 8px; gap: 8px; }
 .relay-toggle i { font-size: 15px; }
 
 /* Compact sensor cards */
