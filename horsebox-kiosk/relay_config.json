@@ -1,0 +1,504 @@
+{
+    "modbus_ip": "192.168.1.123",
+    "modbus_port": 502,
+    "popup_control": {
+        "up_relay_id": 1,
+        "down_relay_id": 2,
+        "zone": "horse_outside"
+    },
+    "zones": {
+        "living": {
+            "id": "living",
+            "name": "Living Area",
+            "icon": "fa-couch",
+            "description": "Living area, bathroom, and kitchen",
+            "sensors": {
+                "temperature": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "\u00b0C"
+                },
+                "humidity": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "%"
+                }
+            }
+        },
+        "bedroom": {
+            "id": "bedroom",
+            "name": "Bedroom",
+            "icon": "fa-bed",
+            "description": "Sleeping area",
+            "sensors": {
+                "temperature": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "\u00b0C"
+                },
+                "humidity": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "%"
+                }
+            }
+        },
+        "horse_outside": {
+            "id": "horse_outside",
+            "name": "Horse & Outside",
+            "icon": "fa-horse",
+            "description": "Horse area and exterior controls",
+            "sensors": {
+                "temperature": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "\u00b0C"
+                },
+                "humidity": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "%"
+                }
+            }
+        },
+        "unassigned": {
+            "id": "unassigned",
+            "name": "Unassigned",
+            "icon": "fa-question",
+            "description": "Relays not yet configured",
+            "sensors": {
+                "temperature": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "\u00b0C"
+                },
+                "humidity": {
+                    "enabled": false,
+                    "type": "",
+                    "address": "",
+                    "unit": "%"
+                }
+            }
+        }
+    },
+    "relays": [
+        {
+            "id": 1,
+            "name": "Popup Up",
+            "address": 0,
+            "zone": "horse_outside",
+            "icon": "fa-arrow-up",
+            "special": "popup_control"
+        },
+        {
+            "id": 2,
+            "name": "Popup Down",
+            "address": 1,
+            "zone": "horse_outside",
+            "icon": "fa-arrow-down",
+            "special": "popup_control"
+        },
+        {
+            "id": 3,
+            "name": "Skylight",
+            "address": 2,
+            "zone": "bedroom",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "bedroom"
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Light Above Bed",
+            "address": 3,
+            "zone": "bedroom",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "bedroom"
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Horse Area Light",
+            "address": 4,
+            "zone": "horse_outside",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "security"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Outside Light",
+            "address": 5,
+            "zone": "horse_outside",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "security"
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Main Power Switch",
+            "address": 6,
+            "zone": "living",
+            "icon": "fa-power-off",
+            "tags": [
+                "critical"
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Fridge",
+            "address": 7,
+            "zone": "living",
+            "icon": "fa-snowflake",
+            "tags": [
+                "critical"
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Water Pump",
+            "address": 8,
+            "zone": "living",
+            "icon": "fa-droplet",
+            "tags": [
+                "critical"
+            ]
+        },
+        {
+            "id": 10,
+            "name": "Popup Strip Light",
+            "address": 9,
+            "zone": "bedroom",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "bedroom"
+            ]
+        },
+        {
+            "id": 11,
+            "name": "X Strip Light",
+            "address": 10,
+            "zone": "living",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "living"
+            ]
+        },
+        {
+            "id": 12,
+            "name": "Kitchen Strip Light",
+            "address": 11,
+            "zone": "living",
+            "icon": "fa-lightbulb",
+            "tags": [
+                "light",
+                "kitchen"
+            ]
+        },
+        {
+            "id": 13,
+            "name": "Test",
+            "address": 12,
+            "zone": "bedroom",
+            "icon": "fa-plug",
+            "tags": [
+                "test"
+            ]
+        },
+        {
+            "id": 14,
+            "name": "141414",
+            "address": 13,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 15,
+            "name": "Relay 15",
+            "address": 14,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 16,
+            "name": "Fan Test",
+            "address": 15,
+            "zone": "bedroom",
+            "icon": "fa-fan",
+            "tags": [
+                "fan",
+                "ventilation"
+            ]
+        },
+        {
+            "id": 17,
+            "name": "Front Fan Horse Area",
+            "address": 16,
+            "zone": "horse_outside",
+            "icon": "fa-fan",
+            "tags": [
+                "fan",
+                "ventilation"
+            ]
+        },
+        {
+            "id": 18,
+            "name": "Back Fan Horse Area",
+            "address": 17,
+            "zone": "horse_outside",
+            "icon": "fa-fan",
+            "tags": [
+                "fan",
+                "ventilation"
+            ]
+        },
+        {
+            "id": 19,
+            "name": "Relay 19",
+            "address": 18,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 20,
+            "name": "Relay 20",
+            "address": 19,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 21,
+            "name": "Relay 21",
+            "address": 20,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 22,
+            "name": "Relay 22",
+            "address": 21,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 23,
+            "name": "Relay 23",
+            "address": 22,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 24,
+            "name": "Relay 24",
+            "address": 23,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 25,
+            "name": "Relay 25",
+            "address": 24,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 26,
+            "name": "Relay 26",
+            "address": 25,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 27,
+            "name": "Relay 27",
+            "address": 26,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 28,
+            "name": "Relay 28",
+            "address": 27,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 29,
+            "name": "Relay 29",
+            "address": 28,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        },
+        {
+            "id": 30,
+            "name": "Relay 30",
+            "address": 29,
+            "zone": "unassigned",
+            "icon": "fa-plug"
+        }
+    ],
+    "scenes": [
+        {
+            "id": "night_mode",
+            "name": "Night Mode",
+            "icon": "fa-moon",
+            "description": "Turn off most lights, keep security lights on",
+            "relay_states": {
+                "3": 0,
+                "4": 1,
+                "5": 1,
+                "6": 1,
+                "7": 1,
+                "10": 1,
+                "11": 0,
+                "12": 0
+            }
+        },
+        {
+            "id": "morning",
+            "name": "Morning",
+            "icon": "fa-sun",
+            "description": "Turn on kitchen and bathroom lights, water pump",
+            "relay_states": {
+                "3": 0,
+                "4": 0,
+                "7": 1,
+                "9": 1,
+                "11": 1,
+                "12": 1
+            }
+        },
+        {
+            "id": "all_off",
+            "name": "All Off",
+            "icon": "fa-power-off",
+            "description": "Turn off all relays (except popup)",
+            "relay_states": {}
+        },
+        {
+            "id": "ventilation",
+            "name": "Ventilation",
+            "icon": "fa-wind",
+            "description": "Turn on all fans for maximum airflow",
+            "relay_states": {},
+            "tagged_states": {
+                "fan": 1
+            }
+        },
+        {
+            "name": "frigo test",
+            "relay_states": {
+                "8": 1
+            },
+            "tagged_states": {},
+            "id": "frigo_test"
+        }
+    ],
+    "automations": [
+        {
+            "id": "auto_1",
+            "name": "Hot Day Cooling",
+            "enabled": false,
+            "icon": "fa-temperature-high",
+            "description": "Turn on all fans when temperature exceeds 25\u00b0C",
+            "conditions": [
+                {
+                    "type": "sensor",
+                    "zone": "living",
+                    "sensor": "temperature",
+                    "operator": ">",
+                    "value": 25
+                }
+            ],
+            "actions": [
+                {
+                    "type": "set_tag",
+                    "tag": "fan",
+                    "state": 1
+                }
+            ],
+            "cooldown": 300
+        },
+        {
+            "id": "auto_2",
+            "name": "Morning Lights",
+            "enabled": false,
+            "icon": "fa-clock",
+            "description": "Turn on lights at 7:00 AM",
+            "conditions": [
+                {
+                    "type": "time",
+                    "time": "07:00"
+                }
+            ],
+            "actions": [
+                {
+                    "type": "activate_scene",
+                    "scene_id": "morning"
+                }
+            ],
+            "cooldown": 3600
+        },
+        {
+            "id": "auto_3",
+            "name": "Night Mode Auto",
+            "enabled": false,
+            "icon": "fa-moon",
+            "description": "Activate night mode at 10:00 PM",
+            "conditions": [
+                {
+                    "type": "time",
+                    "time": "22:00"
+                }
+            ],
+            "actions": [
+                {
+                    "type": "activate_scene",
+                    "scene_id": "night_mode"
+                }
+            ],
+            "cooldown": 3600
+        },
+        {
+            "id": "auto_4",
+            "name": "High Humidity Dehumidify",
+            "enabled": false,
+            "icon": "fa-droplet",
+            "description": "Turn on dehumidifier relay when humidity > 80%",
+            "conditions": [
+                {
+                    "type": "sensor",
+                    "zone": "bedroom",
+                    "sensor": "humidity",
+                    "operator": ">",
+                    "value": 80
+                }
+            ],
+            "actions": [
+                {
+                    "type": "set_relay",
+                    "relay_id": 13,
+                    "state": 1
+                }
+            ],
+            "cooldown": 600
+        }
+    ]
+}

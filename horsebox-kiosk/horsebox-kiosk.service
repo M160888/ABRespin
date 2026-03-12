@@ -1,0 +1,17 @@
+[Unit]
+Description=Horsebox Control System - Kiosk UI
+After=graphical.target horsebox-control.service
+Requires=horsebox-control.service
+
+[Service]
+Type=simple
+User=pi
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+ExecStart=/home/pi/horsebox/start_kiosk.sh
+# NO Restart= directive - allows clean exit for debugging
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target

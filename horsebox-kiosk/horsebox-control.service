@@ -1,0 +1,21 @@
+[Unit]
+Description=Horsebox Control System - Flask Backend
+After=network.target
+
+[Service]
+Type=notify
+User=pi
+WorkingDirectory=/home/pi/horsebox/src/api
+ExecStart=/home/pi/horsebox/venv/bin/python /home/pi/horsebox/src/api/app.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Systemd Watchdog Configuration
+# App must notify systemd every 10 seconds or it will be restarted
+WatchdogSec=10
+NotifyAccess=main
+
+[Install]
+WantedBy=multi-user.target
