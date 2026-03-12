@@ -1,26 +1,28 @@
 #!/bin/bash
-# Horsebox Control System - Secure Kiosk Startup Script
-# This script launches the UI in secure kiosk mode with keyboard shortcuts disabled
+# Horsebox Kiosk - Chromium launcher
+# Requires Pi to be set to X11 mode (raspi-config → Advanced → Wayland → X11)
 
-# Wait for Flask server to be ready
-echo "Waiting for Flask server..."
-until curl -s http://localhost:5000 > /dev/null; do
-    echo "Flask not ready yet, waiting..."
-    sleep 2
-done
-echo "Flask server is ready!"
-
-# Disable screen blanking and power management
+# Disable screen blanking and power saving
 xset s off
-xset -dpms
 xset s noblank
+xset -dpms
 
-# Hide mouse cursor after 5 seconds of inactivity (optional)
-# Uncomment the line below if you want auto-hide cursor
-# unclutter -idle 5 &
+# Hide cursor immediately when idle (touchscreen kiosk — no mouse needed)
+unclutter -idle 0.5 -root &
 
-# Launch Chromium in secure kiosk mode
-chromium-browser \
+# Wait for Flask backend to be available (max 40 seconds)
+echo "Waiting for Flask backend..."
+for i in $(seq 1 40); do
+    if curl -s http://localhost:5000 > /dev/null 2>&1; then
+        echo "Backend ready after ${i}s."
+        break
+    fi
+    sleep 1
+done
+
+# Launch Chromium in kiosk mode
+# NOTE: no --incognito — localStorage is used to persist theme selection
+exec chromium-browser \
     --kiosk \
     --noerrdialogs \
     --disable-infobars \
@@ -33,12 +35,10 @@ chromium-browser \
     --disable-features=TranslateUI \
     --disable-pinch \
     --overscroll-history-navigation=0 \
+    --touch-events=enabled \
     --check-for-update-interval=31536000 \
     --disable-popup-blocking \
     --disable-prompt-on-repost \
-    --incognito \
     http://localhost:5000
 
-# Note: Chromium will exit when you click "Exit Kiosk Mode" in Settings
-# or manually kill it with: pkill chromium
-echo "Kiosk exited cleanly"
+echo "Kiosk exited"

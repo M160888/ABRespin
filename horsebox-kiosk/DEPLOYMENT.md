@@ -27,6 +27,37 @@ static ip_address=192.168.1.100/24
 # No static routers - direct connection, no gateway needed
 ```
 
+## Display Setup — Waveshare 10.1DP-CAPLCD
+
+**Specs:** 1280×800, 60Hz | HDMI (display) + USB (touch)
+
+### Connection
+- HDMI cable → Pi HDMI port
+- USB cable → Pi USB port (touch, no driver needed — USB HID)
+
+### Pi 5 config.txt (fallback if auto-detection fails)
+Pi 5 uses EDID to auto-negotiate 1280×800. If the screen comes up at the wrong resolution, add these lines to `/boot/firmware/config.txt`:
+
+```
+hdmi_group=2
+hdmi_mode=87
+hdmi_cvt 1280 800 60 6 0 0 0
+hdmi_drive=1
+```
+
+> **Pi 5 note:** config.txt is at `/boot/firmware/config.txt`, not `/boot/config.txt`.
+> Try without these lines first — EDID usually handles it cleanly.
+
+### Switch Pi to X11 mode (required for kiosk service)
+Pi 5 Bookworm defaults to Wayland. The kiosk service expects X11:
+
+```bash
+sudo raspi-config
+# → Advanced Options → Wayland → X11 → OK → Finish → Reboot
+```
+
+---
+
 ## Installation Steps
 
 ### 1. Update System
