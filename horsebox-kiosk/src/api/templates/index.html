@@ -6,6 +6,9 @@
     <title>Horsebox Control System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -2131,11 +2134,96 @@ body, html {
 .emergency-stop i { font-size: 24px; }
 .emergency-stop-text { font-size: 8px; }
 
+/* ===== Visual Enhancements ===== */
+
+/* 1. Font upgrade — Rajdhani for UI, JetBrains Mono for values */
+body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01em; }
+#time, #date, #weather,
+.header-info-value,
+.relay-item-id,
+.settings-info-value { font-family: 'JetBrains Mono', monospace; }
+.nav-tab, .relay-toggle, .popup-btn { font-family: 'Rajdhani', sans-serif; letter-spacing: 0.05em; }
+
+/* 2. Dot-grid background texture on content area */
+.main-content {
+    position: relative;
+}
+.main-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+    z-index: 0;
+}
+.page { position: relative; z-index: 1; }
+
+/* 3. Relay card glows when ON */
+.relay-card:has(.relay-toggle.active) {
+    border-color: var(--accent-primary);
+    background: linear-gradient(145deg, rgba(255,107,53,0.09) 0%, var(--bg-card) 60%);
+    box-shadow: 0 0 0 1px var(--accent-primary), 0 4px 24px rgba(255,107,53,0.18);
+}
+.relay-card:has(.relay-toggle.active) .relay-icon {
+    box-shadow: 0 0 14px rgba(255,107,53,0.55);
+}
+
+/* 4. Nav active tab — slim top-bar indicator, not solid fill */
+.nav-tab { position: relative; }
+.nav-tab.active {
+    background: rgba(255, 107, 53, 0.1);
+    border-color: rgba(255, 107, 53, 0.4);
+    color: var(--accent-primary);
+    box-shadow: none;
+}
+.nav-tab.active::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 18%;
+    right: 18%;
+    height: 2px;
+    background: var(--accent-primary);
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 0 10px var(--accent-primary), 0 0 4px var(--accent-primary);
+}
+
+/* 5. Logo areas — clean, intentional, no placeholder feel */
+.logo-left, .logo-right {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    gap: 7px;
+}
+.logo-left i { font-size: 18px; color: var(--accent-primary); }
+.logo-right { color: var(--text-secondary); font-size: 11px; letter-spacing: 1.5px; }
+.logo-right i { font-size: 14px; color: var(--accent-secondary); }
+
+/* 6. Touch feedback — all interactive elements */
+.relay-toggle:active,
+.popup-btn:active,
+.nav-tab:active,
+.overview-scene-btn:active,
+.scene-btn:active,
+.zone-target-btn:active,
+.overview-zone-card:active,
+.emergency-stop:active {
+    transform: scale(0.94);
+    filter: brightness(1.2);
+    transition: transform 0.07s ease, filter 0.07s ease;
+}
+
 </style>
 </head>
 <body>
     <header class="header">
-        <div class="logo-left">Logo Left</div>
+        <div class="logo-left"><i class="fas fa-horse"></i><span>AB RESPIN</span></div>
 
         <div class="header-center">
             <div class="header-info">
@@ -2159,7 +2247,7 @@ body, html {
             </div>
         </div>
 
-        <div class="logo-right">Logo Right</div>
+        <div class="logo-right"><i class="fas fa-microchip"></i><span>CONTROL</span></div>
     </header>
 
     <main class="main-content">
