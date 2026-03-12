@@ -2039,6 +2039,89 @@ body, html {
 .overview-zone-name { font-size: 14px; }
 .overview-zone-count { font-size: 11px; }
 
+/* Zone assignment two-panel layout */
+.zone-assignment-panel {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 12px;
+    min-height: 280px;
+}
+.zone-relay-list {
+    overflow-y: auto;
+    max-height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.zone-relay-group-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    padding: 10px 4px 4px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-card);
+    z-index: 1;
+}
+.relay-item.selected {
+    border-color: var(--accent-secondary);
+    background: rgba(0, 212, 255, 0.12);
+    box-shadow: 0 0 0 2px var(--accent-secondary);
+}
+.zone-target-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.zone-target-btn {
+    flex: 1;
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 6px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-height: 0;
+}
+.zone-target-btn:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+.zone-target-btn.ready {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+}
+.zone-target-btn.ready:hover {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: var(--accent-secondary);
+}
+.zone-target-icon {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--warning));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+}
+
 /* Emergency stop — repositioned for compact nav */
 .emergency-stop { bottom: 64px; right: 12px; width: 58px; height: 58px; }
 .emergency-stop i { font-size: 24px; }
@@ -2400,10 +2483,13 @@ body, html {
                     <div class="settings-content" id="settings-zones">
                         <div class="settings-section">
                             <div class="settings-section-title">Assign Relays to Zones</div>
-                            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">
-                                Drag and drop relays between zones to reassign them.
+                            <p style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">
+                                Tap a relay to select it, then tap a zone to assign it.
                             </p>
-                            <div class="zone-assignment-grid" id="zone-assignment"></div>
+                            <div class="zone-assignment-panel">
+                                <div class="zone-relay-list" id="zone-relay-list"></div>
+                                <div class="zone-target-list" id="zone-target-list"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -2833,119 +2919,99 @@ body, html {
                     relayNameList.appendChild(item);
                 });
 
-                // Build Settings - Zone Assignment
-                const zoneAssignment = document.getElementById('zone-assignment');
-                Object.entries(zones).forEach(([zoneId, zone]) => {
-                    const box = document.createElement('div');
-                    box.className = 'zone-box';
-                    box.dataset.zoneId = zoneId;
-                    box.innerHTML = `
-                        <div class="zone-box-header">
-                            <div class="zone-box-icon">
-                                <i class="fas ${zone.icon}"></i>
-                            </div>
-                            <div class="zone-box-title">${zone.name}</div>
-                            <div class="zone-box-count" id="zone-count-${zoneId}">${zone.relay_count}</div>
-                        </div>
-                        <div id="zone-${zoneId}-relays"></div>
-                    `;
+                // Build Settings - Zone Assignment (two-panel: relay list + zone targets)
+                let selectedRelayId = null;
+                let selectedRelayEl = null;
 
-                    const relayContainer = box.querySelector(`#zone-${zoneId}-relays`);
-                    zone.relays.forEach(relay => {
-                        const item = document.createElement('div');
-                        item.className = 'relay-item';
-                        item.draggable = true;
-                        item.dataset.relayId = relay.id;
-                        item.dataset.currentZone = zoneId;
-                        item.innerHTML = `
-                            <i class="fas ${relay.icon || 'fa-plug'} relay-item-icon"></i>
-                            <span class="relay-item-name">${relay.name}</span>
-                            <span class="relay-item-id">#${relay.id}</span>
+                function buildZoneAssignment(zonesData) {
+                    const relayListEl = document.getElementById('zone-relay-list');
+                    const zoneTargetEl = document.getElementById('zone-target-list');
+                    relayListEl.innerHTML = '';
+                    zoneTargetEl.innerHTML = '';
+                    selectedRelayId = null;
+                    selectedRelayEl = null;
+
+                    // Left panel: relay list grouped by zone
+                    Object.entries(zonesData).forEach(([zoneId, zone]) => {
+                        if (!zone.relays || zone.relays.length === 0) return;
+
+                        const header = document.createElement('div');
+                        header.className = 'zone-relay-group-header';
+                        header.innerHTML = `<i class="fas ${zone.icon}"></i><span>${zone.name}</span>`;
+                        relayListEl.appendChild(header);
+
+                        zone.relays.forEach(relay => {
+                            const item = document.createElement('div');
+                            item.className = 'relay-item';
+                            item.dataset.relayId = relay.id;
+                            item.dataset.currentZone = zoneId;
+                            item.innerHTML = `
+                                <i class="fas ${relay.icon || 'fa-plug'} relay-item-icon"></i>
+                                <span class="relay-item-name">${relay.name}</span>
+                                <span class="relay-item-id">#${relay.id}</span>
+                            `;
+                            item.addEventListener('click', () => {
+                                if (selectedRelayEl) selectedRelayEl.classList.remove('selected');
+                                if (selectedRelayId === relay.id) {
+                                    selectedRelayId = null;
+                                    selectedRelayEl = null;
+                                    zoneTargetEl.querySelectorAll('.zone-target-btn').forEach(b => b.classList.remove('ready'));
+                                } else {
+                                    selectedRelayId = relay.id;
+                                    selectedRelayEl = item;
+                                    item.classList.add('selected');
+                                    zoneTargetEl.querySelectorAll('.zone-target-btn').forEach(b => b.classList.add('ready'));
+                                }
+                            });
+                            relayListEl.appendChild(item);
+                        });
+                    });
+
+                    // Right panel: zone target buttons (always fully visible)
+                    Object.entries(zonesData).forEach(([zoneId, zone]) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'zone-target-btn';
+                        btn.dataset.zoneId = zoneId;
+                        btn.innerHTML = `
+                            <div class="zone-target-icon"><i class="fas ${zone.icon}"></i></div>
+                            <span>${zone.name}</span>
                         `;
-
-                        // Drag start
-                        item.addEventListener('dragstart', (e) => {
-                            e.dataTransfer.effectAllowed = 'move';
-                            e.dataTransfer.setData('text/plain', relay.id);
-                            item.style.opacity = '0.4';
-                        });
-
-                        // Drag end
-                        item.addEventListener('dragend', (e) => {
-                            item.style.opacity = '1';
-                        });
-
-                        relayContainer.appendChild(item);
-                    });
-
-                    // Drop zone handlers
-                    box.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                        box.style.borderColor = 'var(--accent-primary)';
-                        box.style.background = 'rgba(255, 107, 0, 0.1)';
-                    });
-
-                    box.addEventListener('dragleave', (e) => {
-                        if (e.target === box) {
-                            box.style.borderColor = 'var(--border-color)';
-                            box.style.background = 'var(--bg-secondary)';
-                        }
-                    });
-
-                    box.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        box.style.borderColor = 'var(--border-color)';
-                        box.style.background = 'var(--bg-secondary)';
-
-                        const relayId = parseInt(e.dataTransfer.getData('text/plain'));
-                        const draggedItem = document.querySelector(`.relay-item[data-relay-id="${relayId}"]`);
-                        const oldZoneId = draggedItem.dataset.currentZone;
-                        const newZoneId = box.dataset.zoneId;
-
-                        if (oldZoneId === newZoneId) return; // Same zone, do nothing
-
-                        // Send API request to reassign relay
-                        fetch(`/api/relay/${relayId}/assign`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ zone: newZoneId })
-                        })
-                        .then(response => response.json())
-                        .then(result => {
-                            if (result.success) {
-                                // Move relay item to new zone in settings view
-                                const newRelayContainer = box.querySelector(`#zone-${newZoneId}-relays`);
-                                draggedItem.dataset.currentZone = newZoneId;
-                                newRelayContainer.appendChild(draggedItem);
-
-                                // Update relay counts
-                                const oldCount = document.getElementById(`zone-count-${oldZoneId}`);
-                                const newCount = document.getElementById(`zone-count-${newZoneId}`);
-                                oldCount.textContent = parseInt(oldCount.textContent) - 1;
-                                newCount.textContent = parseInt(newCount.textContent) + 1;
-
-                                console.log(`Relay ${relayId} moved from ${oldZoneId} to ${newZoneId}`);
-
-                                // Refresh zone pages to show the change immediately
-                                fetch('/api/zones')
-                                    .then(r => r.json())
-                                    .then(updatedZones => {
-                                        window.rebuildZonePages(updatedZones);
-                                        console.log('Zone pages rebuilt with updated relay assignments');
-                                    });
-                            } else {
-                                alert('Failed to reassign relay: ' + (result.error || 'Unknown error'));
+                        btn.addEventListener('click', () => {
+                            if (!selectedRelayId) return;
+                            const oldZoneId = selectedRelayEl.dataset.currentZone;
+                            if (oldZoneId === zoneId) {
+                                selectedRelayEl.classList.remove('selected');
+                                selectedRelayId = null;
+                                selectedRelayEl = null;
+                                zoneTargetEl.querySelectorAll('.zone-target-btn').forEach(b => b.classList.remove('ready'));
+                                return;
                             }
-                        })
-                        .catch(err => {
-                            console.error('Error reassigning relay:', err);
-                            alert('Network error: Could not reassign relay');
+                            const relayId = selectedRelayId;
+                            fetch(`/api/relay/${relayId}/assign`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ zone: zoneId })
+                            })
+                            .then(r => r.json())
+                            .then(result => {
+                                if (result.success) {
+                                    fetch('/api/zones')
+                                        .then(r => r.json())
+                                        .then(updatedZones => {
+                                            buildZoneAssignment(updatedZones);
+                                            window.rebuildZonePages(updatedZones);
+                                        });
+                                } else {
+                                    alert('Failed to reassign relay: ' + (result.error || 'Unknown error'));
+                                }
+                            })
+                            .catch(() => alert('Network error: Could not reassign relay'));
                         });
+                        zoneTargetEl.appendChild(btn);
                     });
+                }
 
-                    zoneAssignment.appendChild(box);
-                });
+                buildZoneAssignment(zones);
 
                 // Initialize active relay count display
                 window.updateActiveRelayCount();
