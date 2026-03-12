@@ -3494,10 +3494,14 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
             const socket = io();
 
             // Header Clock
+            let gpsTimeOffset = null; // ms offset between GPS UTC and local Date()
+
             function updateClock() {
-                const now = new Date();
-                document.getElementById('date').textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                document.getElementById('time').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                const now = gpsTimeOffset !== null
+                    ? new Date(Date.now() + gpsTimeOffset)
+                    : new Date();
+                document.getElementById('date').textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+                document.getElementById('time').textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
             }
             setInterval(updateClock, 1000);
             updateClock();
@@ -4984,6 +4988,11 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
                 if (data.fix) {
                     fixDot.className = 'gps-fix-dot fixed';
                     gpsBtn.title = 'GPS: Fix acquired';
+                    // Sync clock to GPS UTC time
+                    if (data.time) {
+                        const gpsNow = new Date(data.time);
+                        if (!isNaN(gpsNow)) gpsTimeOffset = gpsNow - Date.now();
+                    }
                 } else {
                     fixDot.className = 'gps-fix-dot searching';
                     gpsBtn.title = 'GPS: Searching...';

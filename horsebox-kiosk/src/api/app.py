@@ -425,13 +425,16 @@ def read_gps():
             while True:
                 packet = gpsd.get_current()
                 if packet.mode >= 2:  # 2D or 3D fix
+                    # GPS time is UTC — include it so the UI can show accurate date/time
+                    gps_time = packet.time if hasattr(packet, 'time') and packet.time else None
                     socketio.emit('gps_data', {
                         'fix': True,
                         'lat': round(packet.lat, 6),
                         'lon': round(packet.lon, 6),
                         'alt': round(packet.alt, 1) if packet.mode == 3 else None,
                         'sats': packet.sats_valid if hasattr(packet, 'sats_valid') else None,
-                        'mode': packet.mode
+                        'mode': packet.mode,
+                        'time': gps_time  # ISO8601 UTC string e.g. "2026-03-12T08:30:00.000Z"
                     })
                 else:
                     socketio.emit('gps_data', {'fix': False})
