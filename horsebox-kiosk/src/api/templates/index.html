@@ -32,11 +32,206 @@
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
             --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
+            /* Theming helpers */
+            --overlay-weak: rgba(255, 255, 255, 0.05);
+            --overlay-mid:  rgba(255, 255, 255, 0.11);
+            --header-bg: linear-gradient(180deg, rgba(26,35,50,0.96) 0%, rgba(20,27,45,0.96) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(20,27,45,0.96) 0%, rgba(10,14,23,0.96) 100%);
+            --vk-bg: #1e2126;
+            --vk-key-bg: #2e3340;
+            --relay-off-bg: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            --logo-filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+        }
+
+        /* ===== THEMES ===== */
+        [data-theme="paddock"] {
+            --bg-primary: #f5f0e6;
+            --bg-secondary: #ede7d9;
+            --bg-card: #fff8ed;
+            --accent-primary: #9b4a15;
+            --accent-secondary: #2d6e26;
+            --text-primary: #1c1208;
+            --text-secondary: #6b5030;
+            --border-color: #c8b898;
+            --success: #267a1e;
+            --danger: #c0351c;
+            --warning: #b86a10;
+            --shadow-glow: 0 0 20px rgba(155, 74, 21, 0.3);
+            --overlay-weak: rgba(0, 0, 0, 0.05);
+            --overlay-mid:  rgba(0, 0, 0, 0.10);
+            --header-bg: linear-gradient(180deg, rgba(237,231,217,0.97) 0%, rgba(245,240,230,0.97) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(237,231,217,0.97) 0%, rgba(245,240,230,0.97) 100%);
+            --vk-bg: #ede7d9;
+            --vk-key-bg: #d8cdb4;
+            --relay-off-bg: linear-gradient(135deg, #ddd4c0 0%, #cfc5ae 100%);
+            --logo-filter: sepia(1) saturate(4) hue-rotate(12deg) brightness(0.6);
+        }
+
+        [data-theme="stable"] {
+            --bg-primary: #0c1a0e;
+            --bg-secondary: #142016;
+            --bg-card: #1c2c1e;
+            --accent-primary: #c9a44a;
+            --accent-secondary: #78ba42;
+            --text-primary: #f0ead8;
+            --text-secondary: #90b080;
+            --border-color: #2a482c;
+            --success: #78ba42;
+            --danger: #d94040;
+            --warning: #c9a44a;
+            --shadow-glow: 0 0 20px rgba(201, 164, 74, 0.35);
+            --overlay-weak: rgba(255, 255, 255, 0.04);
+            --overlay-mid:  rgba(255, 255, 255, 0.09);
+            --header-bg: linear-gradient(180deg, rgba(20,32,22,0.97) 0%, rgba(12,26,14,0.97) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(20,32,22,0.97) 0%, rgba(12,26,14,0.97) 100%);
+            --vk-bg: #142016;
+            --vk-key-bg: #1e3020;
+            --relay-off-bg: linear-gradient(135deg, #1c3020 0%, #142016 100%);
+            --logo-filter: sepia(1) saturate(2.5) hue-rotate(2deg) brightness(1.05) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+        }
+
+        [data-theme="midnight"] {
+            --bg-primary: #060608;
+            --bg-secondary: #0e0e1a;
+            --bg-card: #14142c;
+            --accent-primary: #7c5af8;
+            --accent-secondary: #d070f0;
+            --text-primary: #f0eeff;
+            --text-secondary: #8080b8;
+            --border-color: #2a2858;
+            --success: #58e890;
+            --danger: #f05858;
+            --warning: #d070f0;
+            --shadow-glow: 0 0 20px rgba(124, 90, 248, 0.45);
+            --overlay-weak: rgba(255, 255, 255, 0.04);
+            --overlay-mid:  rgba(255, 255, 255, 0.09);
+            --header-bg: linear-gradient(180deg, rgba(14,14,26,0.97) 0%, rgba(6,6,8,0.97) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(14,14,26,0.97) 0%, rgba(6,6,8,0.97) 100%);
+            --vk-bg: #0e0e1a;
+            --vk-key-bg: #1e1e38;
+            --relay-off-bg: linear-gradient(135deg, #1e1e38 0%, #14142c 100%);
+            --logo-filter: sepia(1) saturate(5) hue-rotate(228deg) brightness(1.15) drop-shadow(0 2px 10px rgba(124,90,248,0.4));
+        }
+
+        [data-theme="ember"] {
+            --bg-primary: #100805;
+            --bg-secondary: #1e1008;
+            --bg-card: #2a1510;
+            --accent-primary: #e85d04;
+            --accent-secondary: #f4a300;
+            --text-primary: #fff0e6;
+            --text-secondary: #b07050;
+            --border-color: #3c2010;
+            --success: #7ec850;
+            --danger: #f03030;
+            --warning: #f4a300;
+            --shadow-glow: 0 0 20px rgba(232, 93, 4, 0.45);
+            --overlay-weak: rgba(255, 200, 100, 0.06);
+            --overlay-mid:  rgba(255, 200, 100, 0.12);
+            --header-bg: linear-gradient(180deg, rgba(30,16,8,0.97) 0%, rgba(16,8,5,0.97) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(30,16,8,0.97) 0%, rgba(16,8,5,0.97) 100%);
+            --vk-bg: #1e1008;
+            --vk-key-bg: #2e1c10;
+            --relay-off-bg: linear-gradient(135deg, #3c2010 0%, #2a1510 100%);
+            --logo-filter: sepia(1) saturate(4) hue-rotate(6deg) brightness(1.1) drop-shadow(0 2px 10px rgba(232,93,4,0.4));
+        }
+
+        [data-theme="arctic"] {
+            --bg-primary: #f0f4f8;
+            --bg-secondary: #e4ecf4;
+            --bg-card: #ffffff;
+            --accent-primary: #1a4a7c;
+            --accent-secondary: #0ea5e9;
+            --text-primary: #0a1a2e;
+            --text-secondary: #4a6080;
+            --border-color: #b8ccdd;
+            --success: #1a7a3a;
+            --danger: #c02828;
+            --warning: #c07010;
+            --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.3);
+            --overlay-weak: rgba(0, 0, 0, 0.04);
+            --overlay-mid:  rgba(0, 0, 0, 0.08);
+            --header-bg: linear-gradient(180deg, rgba(228,236,244,0.98) 0%, rgba(240,244,248,0.98) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(228,236,244,0.98) 0%, rgba(240,244,248,0.98) 100%);
+            --vk-bg: #e4ecf4;
+            --vk-key-bg: #c8d8e8;
+            --relay-off-bg: linear-gradient(135deg, #c8d8e8 0%, #b8ccdd 100%);
+            --logo-filter: sepia(1) saturate(8) hue-rotate(198deg) brightness(0.32);
+        }
+
+        [data-theme="rosewood"] {
+            --bg-primary: #160810;
+            --bg-secondary: #22101a;
+            --bg-card: #2e1824;
+            --accent-primary: #d4839a;
+            --accent-secondary: #f0c870;
+            --text-primary: #f8eef0;
+            --text-secondary: #c098a8;
+            --border-color: #3c1c2c;
+            --success: #68c080;
+            --danger: #f04848;
+            --warning: #f0c870;
+            --shadow-glow: 0 0 20px rgba(212, 131, 154, 0.4);
+            --overlay-weak: rgba(255, 200, 220, 0.06);
+            --overlay-mid:  rgba(255, 200, 220, 0.12);
+            --header-bg: linear-gradient(180deg, rgba(34,16,26,0.97) 0%, rgba(22,8,16,0.97) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(34,16,26,0.97) 0%, rgba(22,8,16,0.97) 100%);
+            --vk-bg: #22101a;
+            --vk-key-bg: #341828;
+            --relay-off-bg: linear-gradient(135deg, #3c1c2c 0%, #2e1824 100%);
+            --logo-filter: sepia(1) saturate(3.5) hue-rotate(295deg) brightness(1.05) drop-shadow(0 2px 10px rgba(212,131,154,0.4));
+        }
+
+        [data-theme="graphite"] {
+            --bg-primary: #18171a;
+            --bg-secondary: #242228;
+            --bg-card: #302e36;
+            --accent-primary: #9a9298;
+            --accent-secondary: #c8bfb0;
+            --text-primary: #ede8f0;
+            --text-secondary: #9490a0;
+            --border-color: #3c3844;
+            --success: #72b870;
+            --danger: #d05858;
+            --warning: #c8a060;
+            --shadow-glow: 0 0 20px rgba(154, 146, 152, 0.35);
+            --overlay-weak: rgba(200, 190, 210, 0.05);
+            --overlay-mid:  rgba(200, 190, 210, 0.10);
+            --header-bg: linear-gradient(180deg, rgba(36,34,40,0.97) 0%, rgba(24,23,26,0.97) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(36,34,40,0.97) 0%, rgba(24,23,26,0.97) 100%);
+            --vk-bg: #242228;
+            --vk-key-bg: #302e36;
+            --relay-off-bg: linear-gradient(135deg, #3c3844 0%, #302e36 100%);
+            --logo-filter: brightness(0.92) saturate(0.6) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+        }
+
+        [data-theme="stealth"] {
+            --bg-primary: #000000;
+            --bg-secondary: #050a05;
+            --bg-card: #0a120a;
+            --accent-primary: #00ff41;
+            --accent-secondary: #00cc33;
+            --text-primary: #c8ffd0;
+            --text-secondary: #508050;
+            --border-color: #0a2a0a;
+            --success: #00ff41;
+            --danger: #ff4040;
+            --warning: #ccff00;
+            --shadow-glow: 0 0 20px rgba(0, 255, 65, 0.5);
+            --overlay-weak: rgba(0, 255, 65, 0.04);
+            --overlay-mid:  rgba(0, 255, 65, 0.09);
+            --header-bg: linear-gradient(180deg, rgba(5,10,5,0.99) 0%, rgba(0,0,0,0.99) 100%);
+            --nav-bg:    linear-gradient(180deg, rgba(5,10,5,0.99) 0%, rgba(0,0,0,0.99) 100%);
+            --vk-bg: #050a05;
+            --vk-key-bg: #0f1e0f;
+            --relay-off-bg: linear-gradient(135deg, #0f1e0f 0%, #0a120a 100%);
+            --logo-filter: sepia(1) saturate(9) hue-rotate(88deg) brightness(1.5) drop-shadow(0 0 12px rgba(0,255,65,0.6));
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            transition: background 0.35s ease, color 0.35s ease;
             color: var(--text-primary);
             height: 100dvh;
             display: flex;
@@ -47,9 +242,10 @@
 
         /* Header */
         .header {
-            background: linear-gradient(180deg, rgba(26, 35, 50, 0.95) 0%, rgba(20, 27, 45, 0.95) 100%);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             border-bottom: 2px solid var(--border-color);
+            overflow: visible;
             padding: 16px 32px;
             display: grid;
             grid-template-columns: 200px 1fr 200px;
@@ -68,7 +264,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--overlay-weak);
             border: 2px dashed var(--border-color);
             border-radius: 8px;
             color: var(--text-secondary);
@@ -102,7 +298,7 @@
 
         /* Header icon buttons (WiFi, User Info) */
         .header-icon-btn {
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--overlay-weak);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-secondary);
@@ -117,7 +313,7 @@
             flex-shrink: 0;
         }
         .header-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
+            background: var(--overlay-mid);
             color: var(--text-primary);
             border-color: var(--accent-primary);
         }
@@ -349,6 +545,7 @@
             height: 100%;
             overflow-y: auto;
             padding: 24px 32px;
+            padding-top: 84px;
         }
 
         .page::-webkit-scrollbar {
@@ -529,18 +726,18 @@
         }
 
         .relay-name:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--overlay-weak);
         }
 
         .relay-name:focus {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--overlay-mid);
             border-color: var(--accent-secondary);
         }
 
         .relay-toggle {
             width: 100%;
             height: 56px;
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            background: var(--relay-off-bg);
             border: 2px solid var(--border-color);
             border-radius: 10px;
             color: var(--text-secondary);
@@ -649,7 +846,7 @@
 
         /* Navigation */
         .navigation {
-            background: linear-gradient(180deg, rgba(20, 27, 45, 0.95) 0%, rgba(10, 14, 23, 0.95) 100%);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             border-top: 2px solid var(--border-color);
             padding: 16px 32px;
@@ -785,7 +982,7 @@
 
         .settings-tab-btn:hover {
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--overlay-weak);
         }
 
         .settings-tab-btn.active {
@@ -2173,6 +2370,7 @@ body, html {
 .page {
     overflow: hidden;
     padding: 10px 14px;
+    padding-top: 84px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -2414,6 +2612,91 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
     transition: transform 0.07s ease, filter 0.07s ease;
 }
 
+/* ================== Logo Notch ================== */
+.logo-notch {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: 190px;
+    height: 76px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 28px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    padding: 6px 16px 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+.logo-notch img {
+    width: 148px;
+    height: auto;
+    filter: var(--logo-filter);
+    transition: filter 0.35s ease;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ================== Theme Picker ================== */
+.theme-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 4px 0 8px;
+}
+.theme-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    position: relative;
+}
+.theme-card:active { transform: scale(0.94); }
+.theme-card.active { border-color: var(--accent-primary); }
+.theme-card.active::after {
+    content: '\2713';
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+.theme-card-preview {
+    height: 52px;
+    display: flex;
+    align-items: flex-end;
+    padding: 6px;
+    gap: 4px;
+}
+.theme-card-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.theme-card-bar {
+    height: 6px;
+    border-radius: 3px;
+    flex: 1;
+    opacity: 0.6;
+}
+.theme-card-name {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    padding: 5px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
 /* ================== Virtual Keyboard ================== */
 .vkeyboard {
     position: fixed;
@@ -2421,7 +2704,7 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
     left: 0;
     right: 0;
     z-index: 9000;
-    background: #1e2126;
+    background: var(--vk-bg);
     border-top: 1px solid #3a3f4a;
     border-radius: 14px 14px 0 0;
     box-shadow: 0 -4px 24px rgba(0,0,0,0.5);
@@ -2470,7 +2753,7 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
     height: 44px;
     padding: 0 6px;
     border-radius: 8px;
-    background: #2e3340;
+    background: var(--vk-key-bg);
     color: #e0e4ec;
     font-size: 16px;
     font-weight: 500;
@@ -2561,6 +2844,10 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
             <button class="header-icon-btn" id="user-info-btn" title="Client Info">
                 <i class="fas fa-user"></i>
             </button>
+
+            <button class="header-icon-btn" id="theme-btn" title="Change Theme">
+                <i class="fas fa-palette"></i>
+            </button>
         </div>
 
         <div class="logo-right">
@@ -2568,6 +2855,11 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
                 <i class="fas fa-power-off"></i>
                 <span>All Off</span>
             </button>
+        </div>
+
+        <!-- Logo notch — hangs below the header, centred -->
+        <div class="logo-notch">
+            <img src="/static/img/AB_H_E_nobg.png" alt="AB Horseboxes & Engineering Ltd">
         </div>
     </header>
 
@@ -3061,6 +3353,19 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
                 <button class="modal-btn modal-btn-primary" id="user-info-save-btn" style="display:none">
                     <i class="fas fa-save"></i> Save
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Picker Modal -->
+    <div class="modal-overlay" id="theme-modal-overlay">
+        <div class="modal" style="max-width:480px">
+            <div class="modal-header">
+                <span><i class="fas fa-palette" style="margin-right:8px"></i>Theme</span>
+                <button class="modal-close" id="theme-modal-close">&times;</button>
+            </div>
+            <div class="theme-picker-grid" id="theme-picker-grid">
+                <!-- Cards injected by JS -->
             </div>
         </div>
     </div>
@@ -4499,6 +4804,65 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
         window.toggleRelaySelection = toggleRelaySelection;
         window.toggleTagSelection = toggleTagSelection;
 
+        // ================== Theme Picker ==================
+        (function() {
+            const THEMES = [
+                { id: 'circuit',  name: 'Circuit',  bg: '#0a0e17', card: '#1a2332', acc: '#ff6b35', acc2: '#00d4ff', text: '#ffffff' },
+                { id: 'paddock',  name: 'Paddock',  bg: '#f5f0e6', card: '#fff8ed', acc: '#9b4a15', acc2: '#2d6e26', text: '#1c1208' },
+                { id: 'stable',   name: 'Stable',   bg: '#0c1a0e', card: '#1c2c1e', acc: '#c9a44a', acc2: '#78ba42', text: '#f0ead8' },
+                { id: 'midnight', name: 'Midnight', bg: '#060608', card: '#14142c', acc: '#7c5af8', acc2: '#d070f0', text: '#f0eeff' },
+                { id: 'ember',    name: 'Ember',    bg: '#100805', card: '#2a1510', acc: '#e85d04', acc2: '#f4a300', text: '#fff0e6' },
+                { id: 'arctic',   name: 'Arctic',   bg: '#f0f4f8', card: '#ffffff', acc: '#1a4a7c', acc2: '#0ea5e9', text: '#0a1a2e' },
+                { id: 'rosewood', name: 'Rosewood', bg: '#160810', card: '#2e1824', acc: '#d4839a', acc2: '#f0c870', text: '#f8eef0' },
+                { id: 'graphite', name: 'Graphite', bg: '#18171a', card: '#302e36', acc: '#9a9298', acc2: '#c8bfb0', text: '#ede8f0' },
+                { id: 'stealth',  name: 'Stealth',  bg: '#000000', card: '#0a120a', acc: '#00ff41', acc2: '#00cc33', text: '#c8ffd0' },
+            ];
+
+            const body = document.body;
+            const grid = document.getElementById('theme-picker-grid');
+            const overlay = document.getElementById('theme-modal-overlay');
+            const closeBtn = document.getElementById('theme-modal-close');
+            const themeBtn = document.getElementById('theme-btn');
+
+            let currentTheme = localStorage.getItem('kiosk-theme') || 'circuit';
+
+            function applyTheme(id) {
+                currentTheme = id;
+                body.removeAttribute('data-theme');
+                if (id !== 'circuit') body.setAttribute('data-theme', id);
+                localStorage.setItem('kiosk-theme', id);
+                renderGrid();
+            }
+
+            function renderGrid() {
+                grid.innerHTML = '';
+                THEMES.forEach(t => {
+                    const card = document.createElement('div');
+                    card.className = 'theme-card' + (t.id === currentTheme ? ' active' : '');
+                    card.style.cssText = `background:${t.bg}; border-color: ${t.id === currentTheme ? t.acc : 'transparent'}`;
+                    card.innerHTML = `
+                        <div class="theme-card-preview" style="background:${t.bg}">
+                            <div class="theme-card-dot" style="background:${t.acc}"></div>
+                            <div class="theme-card-bar" style="background:${t.acc2}"></div>
+                            <div class="theme-card-bar" style="background:${t.text}; opacity:0.3"></div>
+                        </div>
+                        <div class="theme-card-name" style="background:${t.card}; color:${t.text}">${t.name}</div>`;
+                    card.addEventListener('click', () => { applyTheme(t.id); overlay.style.display = 'none'; });
+                    grid.appendChild(card);
+                });
+            }
+
+            themeBtn.addEventListener('click', () => {
+                renderGrid();
+                overlay.style.display = 'flex';
+            });
+            closeBtn.addEventListener('click', () => overlay.style.display = 'none');
+            overlay.addEventListener('click', e => { if (e.target === overlay) overlay.style.display = 'none'; });
+
+            // Apply saved theme on load
+            applyTheme(currentTheme);
+        })();
+
         // ================== Virtual Keyboard ==================
         (function() {
             const QWERTY = [
@@ -4605,6 +4969,13 @@ body { font-family: 'Rajdhani', 'Arial Narrow', sans-serif; letter-spacing: 0.01
                 vk.classList.remove('vkeyboard--standby');
                 vkTarget = null;
                 standby = false;
+                // Ghost-click guard: briefly freeze modal overlays so the
+                // pointer-event chain that hid the keyboard doesn't accidentally
+                // trigger an overlay-click close on whatever's underneath.
+                document.querySelectorAll('.modal-overlay').forEach(o => {
+                    o.style.pointerEvents = 'none';
+                    setTimeout(() => o.style.pointerEvents = '', 320);
+                });
             }
 
             function goStandby() {
