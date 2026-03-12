@@ -4,12 +4,8 @@ services:
     runtime: python
     plan: free
     region: oregon
-    buildCommand: |
-      cd horsebox-kiosk
-      pip install -r requirements.txt
-    startCommand: |
-      cd horsebox-kiosk/src/api
-      python3 app.py
+    buildCommand: pip install -r horsebox-kiosk/requirements.txt
+    startCommand: python horsebox-kiosk/src/api/app.py
     envVars:
       - key: FLASK_ENV
         value: production
