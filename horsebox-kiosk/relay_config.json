@@ -216,7 +216,7 @@
             "id": 13,
             "name": "Test",
             "address": 12,
-            "zone": "bedroom",
+            "zone": "unassigned",
             "icon": "fa-plug",
             "tags": [
                 "test"
@@ -240,7 +240,7 @@
             "id": 16,
             "name": "Fan Test",
             "address": 15,
-            "zone": "bedroom",
+            "zone": "unassigned",
             "icon": "fa-fan",
             "tags": [
                 "fan",
