@@ -17,13 +17,14 @@ except ImportError:
     GPSD_AVAILABLE = False
     print("⚠️  gpsd-py3 not installed - GPS disabled")
 
-# Systemd watchdog support (optional - won't crash if not available)
+# Systemd watchdog support via sdnotify (pure Python, no C deps)
 try:
-    from systemd import daemon as systemd_daemon
+    from sdnotify import SystemdNotifier
+    systemd_daemon = SystemdNotifier()
     SYSTEMD_AVAILABLE = True
 except ImportError:
     SYSTEMD_AVAILABLE = False
-    print("⚠️  systemd-python not installed - watchdog notifications disabled")
+    print("⚠️  sdnotify not installed - watchdog notifications disabled")
 
 # Add src directory to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -451,7 +452,7 @@ def systemd_watchdog_notify():
         return
 
     # Notify systemd that we're ready
-    systemd_daemon.notify('READY=1')
+    systemd_daemon.notify("READY=1")
     print("✅ Notified systemd: Service ready")
 
     # Get watchdog interval from systemd (or default to 5 seconds)
@@ -467,7 +468,7 @@ def systemd_watchdog_notify():
     while True:
         time.sleep(interval)
         # Notify systemd we're still alive
-        systemd_daemon.notify('WATCHDOG=1')
+        systemd_daemon.notify("WATCHDOG=1")
         # Uncomment for debugging:
         # print(f"🐕 Watchdog notification sent at {time.strftime('%H:%M:%S')}")
 
